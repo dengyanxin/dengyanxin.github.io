@@ -1,0 +1,885 @@
+java集合类也被称为容器类
+
+
+主方法：
+package com.yanxin;
+
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class Setdemo {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//自动排序
+		Set set = new TreeSet();//Student类的
+		//Set set = new TreeSet(new Mycomparator());//Mycomparator类的
+		set.add(new Student("李白",20,100));
+		set.add(new Student("貂蝉",19,90));
+		set.add(new Student("孙悟空",22,90));
+		Iterator iterator = set.iterator();
+		while(iterator.hasNext()){
+			Student s = (Student)iterator.next();
+			System.out.println(s.getName()+"-----"+s.getAge()+"----			   
+                                                       "+s.getCheng());
+		}
+	}
+}
+
+
+方法一：
+package com.yanxin;
+
+public class Student implements Comparable{
+	private String name;
+	private int age;
+	private int cheng;
+	public Student(String name,int age,int cheng){
+		this.name=name;
+		this.age=age;
+		this.cheng=cheng;
+	}
+	public void setName(String name){
+		this.name=name;
+	}
+	public void setAge(int age){
+		this.age=age;
+	}
+	public String getName() {
+		return name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public int getCheng() {
+		// TODO Auto-generated method stub
+		return cheng;
+	}
+	@Override
+	public int compareTo(Object o) {
+		Student student = (Student)o;
+		if(this.age>student.getAge()){
+			return 1;
+		}
+		if(this.age==student.getAge()){
+			return 0;
+		}
+		if(this.age<student.getAge()){
+			return -1;
+		}	
+		return age;
+	}
+	
+}
+
+
+方法二：
+package com.yanxin;
+
+import java.util.Comparator;
+
+public class Mycomparator implements Comparator{
+	public int compare(Object o1,Object o2){
+		Student s1 = (Student)o1;
+		Student s2 = (Student)o2;
+		if(s1.getAge()>s2.getAge()){
+			return 1;
+		}
+		if(s1.getAge()==s2.getAge()){
+			return 0;
+		}
+		if(s1.getAge()<s2.getAge()){
+			return -1;
+		}
+		return 0;
+	}
+	
+}
+
+JAVA集合概念
+　　Java集合是使程序能够存储和操纵元素不固定的一组数据。 所有Java集合
+类都位于java.uti包中。
+
+与Java数组不同，Java集合中不能存放基本数据类型，只能存放对象的引用。但是在JDK5.0以后的版本当中，JAVA增加了
+
+“自动装箱”和“自动拆箱”的机制，比如如果要存入一个INT类型的数据，JVM会把数据包装成Integer然后再存入集合，
+
+看起来集合能够存入基本数据类型，其实是不能的只是多了一个包装数据的过程。
+
+　　而且存入集合的数据都会被转换成OBject类型。
+
+Java集合主要分为以下3种类型：
+
+ 
+
+　　1：Set(集)：集合中的对象不按特定方式排序，并且没有重复对象。它的有些实现类能对集合中的对象按特定方式排序。一个存储区只能存单一值元素。
+
+　　2： List(列表)：集合中的对象按照索引位置排序，可以有重复对象，允许按照对象在集合中的索引位置检索对象。List与数组有些相似。
+
+        3： Map(映射)：集合中的每一个元素包含一对键对象和值对象，集合中没有重复的键对象，但值对象可以重复。它的有些实现类能对集合中的键对象进行排序。
+
+Collection和Iterator接口：
+
+ Collection接口：
+
+ 在Collection接口中声明了适合Java集合（只包括Set和List）的通用方法。
+
+ 
+Collection接口方法列表 
+方法 　　　　　　　　　　　　　　　　描述 
+boolean add(Object o) 　　　　　  　向集合加入一个对象的引用 
+void clear()  　　　　　　　　　删除集合中所有对象，即不在持有对象的引用 
+boolean contains(Object o) 　　　　 判断在集合中是否持有对象的引用 
+boolean isEmpty()　　　　　　　　　 判断集合是否为空 
+Iterator iterator()　　　 返回一个Iterator对象，可以用它来遍历集合中的元素 
+boolean remove(Object o)  　　　　 从集合中删除一个对象的引用 
+int size()    　　　　　　　　　　　　返回集合中元素的个数 
+object[] toArray() 　　　　　　返回一个数组，该数组包含集合中的所有元素
+
+注：Set接口和List接口都继承了Collection接口，而Map接口没有继承Collection接口，因此Set和List对象可以调用以下方法，但Map对象不能调用。
+
+ Iterator接口： 
+　　Collection接口的iterator()和toArray()方法都用于获得集合中的所有元素，前者返回一个Iterator对象，后者返回一个包含集合中所有元素的数组。 
+Iterator接口隐藏底层集合中的数据结构，提供遍历各种类型集合的统一接口。Iterator接口中声明如下的方法： 
+1，、hasNext():判断集合中的元素是否遍历完毕，如果没有，返回true。
+
+2、next():返回下一个元素。
+
+3、remove():从集合中删除上一个由next()方法返回的元素。
+
+
+
+
+
+
+
+1、Map概述
+
+1.1 什么是Map
+
+Map是将键映射到值( key-value )的对象。一个映射不能包含重复的键；每个键最多只能映射到一个值。Map 接口提供三种collection 视图，允许以键集(keySet())、值集(values())或键-值映射关系集(entrySet())的形式查看某个映射的内容( 即获取键值对的内容 )。
+映射顺序定义为迭代器在映射的 collection 视图上返回其元素的顺序,即可以映射得到键、值和键-值的Set集合，元素的顺序是由得到的Set集合所决定的。某些映射实现可明确保证其顺序，如 TreeMap 类；另一些映射实现则不保证顺序，如 HashMap 类 。
+
+1.2 Map与Collection的区别
+
+1.Map 存储的是键值对形式的元素，键唯一，值可以重复。
+2.Collection 存储的是单列元素，子接口Set元素唯一，子接口List元素可重复。
+3.Map集合的数据结构值针对键有效，跟值无关，Collection集合的数据结构是针对元素有效
+关于Collection可以戳这里java集合框架之Collection实例解析
+
+2、Map继承体系
+
+下面列出了常见Map集合的继承体系与他们的特点
+
+---Map 键唯一
+    |------HashMap
+    基于哈希表的 Map 接口的实现。此实现提供所有可选的映射操作，并允许使用 null 值和 null 键。（除了非同步和允许使用 null 之外，HashMap 类与 Hashtable 大致相同。）此类不保证映射的顺序，特别是它不保证该顺序恒久不变。 此实现不是同步的。
+        |------LinkedHashMap
+    Map接口的哈希表和链接列表实现，具有可预知的迭代顺序。此实现与 HashMap 的不同之处在于，后者维护着一个运行于所有条目的双重链接列表。此链接列表定义了迭代顺序，该迭代顺序通常就是将键插入到映射中的顺序（插入顺序）。此实现不是同步的
+    |------WeakHashMap
+    以弱键 实现的基于哈希表的 Map。在 WeakHashMap 中，当某个键不再正常使用时，将自动移除其条目。更精确地说，对于一个给定的键，其映射的存在并不阻止垃圾回收器对该键的丢弃，这就使该键成为可终止的，被终止，然后被回收。丢弃某个键时，其条目从映射中有效地移除，null 值和 null 键都被支持。
+    |------Hashtable
+    此类实现一个哈希表，该哈希表将键映射到相应的值。任何非 null 对象都可以用作键或值。        Hashtable 是同步的 
+
+    |------TreeMap
+    基于红黑树（Red-Black tree）的 NavigableMap 实现。该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的 Comparator 进行排序，具体取决于使用的构造方法。 此实现不是同步的
+3、Map泛型接口
+
+Map特点 ： 由key-value键值对组成，键不可重复，值可重复
+大致包含如下功能：
+
+插入（put、putAll()）、删除（remove()）
+获取（entrySet()、get()、keySet()、size()、values()）
+判断（containsKey()、containsValue()、equals()、isEmpty()）、清除（clear()）
+替换（replace()，replace(K key, V oldValue, V newValue) jdk1.8之后，后面示例会讲到它们）
+
+方法摘要
+
+ void clear() 
+          从此映射中移除所有映射关系（可选操作）。 
+ boolean containsKey(Object key) 
+          如果此映射包含指定键的映射关系，则返回 true。 
+ boolean containsValue(Object value) 
+          如果此映射将一个或多个键映射到指定值，则返回 true。 
+ Set<Map.Entry<K,V>> entrySet() 
+          返回此映射中包含的映射关系的 Set 视图。 
+ boolean equals(Object o) 
+          比较指定的对象与此映射是否相等。 
+ V get(Object key) 
+          返回指定键所映射的值；如果此映射不包含该键的映射关系，则返回 null。 
+ int hashCode() 
+          返回此映射的哈希码值。 
+ boolean isEmpty() 
+          如果此映射未包含键-值映射关系，则返回 true。 
+ Set<K> keySet() 
+          返回此映射中包含的键的 Set 视图。 
+ V put(K key, V value) 
+          将指定的值与此映射中的指定键关联（可选操作）。 
+ void putAll(Map<? extends K,? extends V> m) 
+          从指定映射中将所有映射关系复制到此映射中（可选操作）。 
+ V remove(Object key) 
+          如果存在一个键的映射关系，则将其从此映射中移除（可选操作）。 
+ int size() 
+          返回此映射中的键-值映射关系数。 
+ Collection<V> values() 
+          返回此映射中包含的值的 Collection 视图。
+
+
+
+
+3.1、 Map集合遍历的常见方式
+
+方式1、根据键获取值(key -> value)
+
+1.获取所有键的集合
+2.遍历键的集合，获取到每一个键
+3.根据键找值
+方式2、根据键值对对象获取键和值( entrySet -> key,value)
+
+1.获取所有键值对对象的集合
+2.遍历键值对对象的集合，获取到每一个键值对对象
+3.根据键值对对象找键和值
+3.11 Map使用示例
+
+public class MapReview {
+    public static void main(String[] args) {
+        Map<String, String> map=new HashMap<String, String>();
+        map.put("000", "qqq");
+        map.put("003", "rrr");
+        map.put("001", "www");
+        map.put("002", "eee");
+        map.put("004", "sss");
+
+        // System.out.println(map);  // 直接打印输出键值对
+
+        // 遍历1 ： 通过键值对对象entrySet获取键与值
+        Set<Entry<String, String>> entrySet = map.entrySet();
+        for (Entry<String, String> entry : entrySet) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            System.out.println("key="+key+" value="+value);
+        }
+        System.out.println("-------------------");
+
+        // 遍历2　：　通过键keySet获取值
+        Set<String> keySet = map.keySet(); // 得到键的集合
+        for (String key : keySet) {
+            String value = map.get(key);
+            System.out.println("key="+key+" value="+value);
+        }
+        System.out.println("-------------------");
+
+        // 获取Map值的集合
+        Collection<String> values = map.values();
+        System.out.println(values);
+
+        // 判断是否存在键和值
+        System.out.println("containsKey="+map.containsKey("001"));
+        System.out.println("containsKey="+map.containsValue("eee"));
+
+        // 向Map集合添加元素时，若键存在，则返回之前与键对应的值
+        String put = map.put("000", "aaa");
+        System.out.println("put="+put); // output： qqq
+
+        //  default V replace(K key, V value)
+        //  替换功能，将旧值替换成新值，并返回旧值（若有的话）
+        String replace = map.replace("003", "666");
+        System.out.println("replace="+replace);
+        System.out.println(map);
+
+        // default boolean replace(K key, V oldValue, V newValue
+        // 只有当键key存在，并且oldValue与newValue相等时，旧的值才会被替换成新的值，并且返回true
+        boolean success = map.replace("004", "sss", "lll"); 
+        System.out.println("replace2="+success); // output : true
+    }
+}
+
+
+
+
+3.2、 HashMap
+
+3.21.HashMap的特点
+
+①键是哈希表结构，可以保证键的唯一性，
+②当向已存在key的Map中添加元素时，会覆盖掉旧值，并将旧值返回。
+③它允许使用 null 值和 null 键，但不保证映射的顺序，特别是它不保证该顺序恒久不变(即不会保证存储的顺序与输出的顺序恒久不变)。 
+④此实现不是同步的。
+注意：
+
+对于自定义对象，需重写其equals和hashCode方法才能保证其key的唯一性
+3.22.HashMap与Hashtable的异同
+
+除了非同步和允许使用 null 之外，HashMap 类与 Hashtable 大致相同
+3.23.HashMap的使用示例
+
+public class HashMapReview {
+    public static void main(String[] args) {
+        test1();
+        test2();
+
+    }
+
+    /**
+     * 自定义类型做key,
+     * 需重写其equals和hashCode方法才能保证其key的唯一性
+     */
+    private static void test2() {
+        HashMap<Info, String> map=new HashMap<Info, String>();
+        map.put(new Info(0, "aaa"),"0000");
+        map.put(new Info(1, "bbb"),"1111");
+        map.put(new Info(3, "ddd"),"3333");
+        map.put(new Info(0, "aaa"),"4444");
+        map.put(new Info(2, "ccc"),"2222");
+        printMap(map);
+        // output：
+//      key=Info [id=3, adress=ddd] value=3333
+//      key=Info [id=2, adress=ccc] value=2222
+//      key=Info [id=0, adress=aaa] value=0000
+//      key=Info [id=1, adress=bbb] value=1111
+//      key=Info [id=0, adress=aaa] value=4444  // 当Info没有重写equals和hashCode方法时，key出现重复元素
+    }
+
+    /**
+     * String或基本数据类型的包装类做key，他们已重写了hashCode与equals方法
+     * 键唯一，重复添加会替换旧值成新值
+     */
+    private static void test1() {
+        HashMap<String, String> map=new HashMap<String, String>();
+        map.put("aaa", "123");
+        map.put("bbb", "789");
+        map.put("aaa", "456");
+        map.put("ccc", "321");
+        System.out.println(map);
+        // output：
+//      {aaa=456, ccc=321, bbb=789}
+        // 重复的键不会重新插入，只会替换旧值成新值
+    }
+
+    private static void printMap(Map<Info, String> map) {
+        Set<Entry<Info, String>> entrySet = map.entrySet();
+        for (Entry<Info, String> entry : entrySet) {
+            System.out.println("key="+entry.getKey()+" value="+entry.getValue());
+        }
+    }
+}
+
+3.24 一个HashMap面试题
+
+需求如下：
+
+ 已知一个HashMap<Integer，Person>集合， Person有name（String）和age（int）属性。
+ 请写一个方法实现对HashMap的排序功能。该方法接收HashMap<Integer，Person>为形参，返回类型为HashMap<Integer，Person>，要求对HashMap中的Person的age升序进行排序。排序时key=value键值对不得拆散。
+1
+2
+1
+2
+分析：
+
+HashMap本身是不保证元素的顺序不变的，要对其排序可使用LinkedHashMap，它是有序的并且还是HashMap的子类，我们可以使用它来完成排序的目的。最后返回它的实例即可满足要求 并且还符合多态的编程思想 
+示例代码
+
+public class SortedHashMapDemo {
+    public static void main(String[] args) {
+        HashMap<Integer, Person> map = new LinkedHashMap<Integer, Person>();
+        map.put(0, new Person("小明", 20));
+        map.put(1, new Person("小二", 26));
+        map.put(2, new Person("小四", 19));
+        map.put(3, new Person("阿七", 33));
+        map.put(4, new Person("十四", 25));
+        map.put(4, new Person("小花", 19));
+        System.out.println(map);
+        HashMap<Integer, Person> sortedHashMap = SortedHashMap(map);
+        System.out.println(sortedHashMap);
+    }
+
+    public static HashMap<Integer, Person> SortedHashMap(
+            HashMap<Integer, Person> map) {
+        // 获得键值对Set集合
+        Set<Entry<Integer, Person>> entrySet = map.entrySet();
+        // 将键值对Set集合转化为List以用Collections来排序
+        List<Entry<Integer, Person>> list = new ArrayList<Map.Entry<Integer, Person>>(
+                entrySet);
+        // 通过Collections来排序，添加比较器，比较年龄
+        Collections.sort(list, new Comparator<Entry<Integer, Person>>() {
+            @Override
+            public int compare(Entry<Integer, Person> o1, Entry<Integer, Person> o2) {
+                int result = o2.getValue().age - o1.getValue().age;
+                result = result == 0 ? o2.hashCode() - o1.hashCode() : result;
+                return result;
+            }
+        });
+
+        // 创建LinkedHashMap来存储排好序的List元素
+        LinkedHashMap<Integer, Person> linkedHashMap = new LinkedHashMap<Integer, Person>();
+        // 遍历List，将元素添加到linkedHashMap中
+        for (Entry<Integer, Person> entry : list) {
+            linkedHashMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return linkedHashMap;
+    }
+}
+
+class Person {
+    String name;
+    int age;
+
+    public Person(String name, int age) {
+        super();
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person [name=" + name + ", age=" + age + "]";
+    }
+}
+
+
+
+
+3.3、 LinkedHashMap
+
+3.31 LinkedHashMap特点：
+
+Map接口的哈希表和链接列表实现，具有可预知的迭代顺序。此链接列表定义了迭代顺序（即存储的顺序与输出的顺序相同），该迭代顺序通常就是将键插入到映射中的顺序（插入顺序）。此实现不是同步的
+注意：
+
+①当key为String或基本数据类型包装类，键相同自动替换旧值为新值 (因为他们已重写了hashCode与equals方法) 
+②当key为自定义对象，需让其重写hashCode与equals方法才能保证key的唯一性
+3.32 LinkedHashMap使用示例
+
+public class LinkedHashMapReview {
+    public static void main(String[] args) {
+        test1();
+        test2();
+        test3();
+    }
+
+    /**
+     * 自定义对象为key
+     * 需让其重写hashCode与equals方法才能保证key的唯一性
+     */
+    private static void test3() {
+        LinkedHashMap<Info, Integer> map=new LinkedHashMap<Info, Integer>();
+        map.put(new Info(0, "vvv"), 000);
+        map.put(new Info(0, "vvv"), 333);
+        map.put(new Info(1, "ccc"), 111);
+        System.out.println(map);
+        // output :  当Info没有重写hashCode与equals方法，
+//      {Info [id=0, adress=vvv]=0, Info [id=0, adress=vvv]=333, Info [id=1, adress=ccc]=111}
+
+        // output :  当Info重写hashCode与equals方法
+//      {Info [id=0, adress=vvv]=333, Info [id=1, adress=ccc]=111}
+
+    }
+
+    /**
+     * 基本数据类型包装类重写了hashCode与equals方法，键相同自动替换旧值为新值
+     */
+    private static void test2() {
+        LinkedHashMap<Integer, Integer> map=new LinkedHashMap<Integer, Integer>();
+        map.put(1, 66);
+        map.put(2, 67);
+        map.put(3, 68);
+        map.put(1, 69);  // 自动装箱 Integer.valueOf(69)
+        System.out.println(map);
+        // output
+//      {1=69, 2=67, 3=68}
+        // 输出顺序与存储相同，重复添加已有的键会替换掉旧值
+    }
+
+    /**
+     * String做key
+     * String类实现了hashCode与equals方法，键相同自动替换旧值为新值
+     */
+    private static void test1() {
+        LinkedHashMap<String, String> map=new LinkedHashMap<String, String>();
+        map.put("aa", "121");
+        map.put("bb", "122");
+        map.put("cc", "123");
+        map.put("aa", "122");
+        map.put("dd", "122");
+        map.put("ee", "122");
+
+        System.out.println(map);
+        // output 
+        // {aa=122, bb=122, cc=123, dd=122, ee=122}
+        // 输出顺序与存储相同，重复添加已有的键会替换掉旧值
+    }
+}
+
+
+
+
+3.4、 Hashtable
+
+Hashtable是同步的，它不允许使用 null 值和 null 键。除此之外与HashMap大致相同,示例略 
+3.41 使用Properties
+
+Properties类继承自Hashtable，表示了一个持久的属性集，由键值对（key-value）组成。
+与Hashtable不同的是，Properties 属性列表中每个键及其对应值都是一个字符串，因此不推荐使用Hashtable的put方法为Properties添加属性。
+
+Properties 可通过store方法保存在流中或通过load方法从流中加载。如下三种方式：
+
+1.通过字节输入输出流
+
+ void load(InputStream inStream) 
+                  从输入流中读取属性列表（键和元素对）。 
+ void store(OutputStream out, String comments) 
+                  以适合使用 load(InputStream) 方法加载到 Properties 表中的格式，将此 Properties 表中的属性列表（键和元素对）写入输出流。 
+2.通过字符输入输出流
+
+ void load(Reader reader) 
+              按简单的面向行的格式从输入字符流中读取属性列表（键和元素对）。 
+void store(Writer writer, String comments) 
+              以适合使用 load(Reader) 方法的格式，将此 Properties 表中的属性列表（键和元素对）写入输出字符。 
+3.通过xml
+
+void loadFromXML(InputStream in) 
+              将指定输入流中由 XML 文档所表示的所有属性加载到此属性表中。   
+void storeToXML(OutputStream os, String comment) 
+              发出一个表示此表中包含的所有属性的 XML 文档。 
+void storeToXML(OutputStream os, String comment, String encoding) 
+              使用指定的编码发出一个表示此表中包含的所有属性的 XML 文档。  
+通过如下方法存取键值
+ String getProperty(String key) 
+              用指定的键在此属性列表中搜索属性。 
+String getProperty(String key, String defaultValue) 
+              用指定的键在属性列表中搜索属性。 
+ Object setProperty(String key, String value) 
+              调用 Hashtable 的方法 put。 
+
+ void list(PrintStream out) 
+              将属性列表输出到指定的输出流。 
+ void list(PrintWriter out) 
+              将属性列表输出到指定的输出流。 
+ Set<String> stringPropertyNames() 
+              返回此属性列表中的键集，其中该键及其对应值是字符串，如果在主属性列表中未找到同名的键，则还包括默认属性列表中不同的键。 
+下面通过示例使用Properties 
+1.创建一个属性文件
+
+/**
+     * 创建一个属性文件
+     * @throws IOException
+     */
+    private static void create() throws IOException {
+        // 创建一个空的属性文件
+        Properties prop = new Properties();
+        // 创建一个文件输出流，用于写出属性文件到本地
+        FileWriter writer = new FileWriter("config.properties");//亦可以使用FileOutputStream
+        // 设置属性键与值
+        prop.setProperty("name", "pecuyu");
+        prop.setProperty("character", "kind");
+        // 通过字符输出流将键值对写入属性文件
+        prop.store(writer, "this is new");
+        writer.close();
+    }
+
+
+
+
+2.读取属性文件内容
+
+    /**
+     * 读取一个属性文件
+     */
+    private static void load() throws FileNotFoundException, IOException {
+        // 创建属性文件
+        Properties prop=new Properties();
+        // 从流中读取属性列表到属性文件
+        prop.load(new FileInputStream("config.properties"));// 亦可使用FileReader
+        // 通过键取值
+        String name = prop.getProperty("name");
+        String character = prop.getProperty("character");
+        //System.out.println("name="+name+" character="+character);
+
+        prop.list(System.out); // 将属性键值对列出并打印到控制台
+
+        Set<String> stringPropertyNames = prop.stringPropertyNames();// 键的set集合
+        for (String key : stringPropertyNames) {
+            String value = prop.getProperty(key);  // 通过键获取值
+            System.out.println("key="+key+" value="+value);
+        }
+
+    }
+
+
+
+
+3.5、 WeakHashMap
+
+3.51 特点
+
+以弱键 实现的基于哈希表的 Map。在 WeakHashMap 中，当某个键不再正常使用时，将自动移除其条目。更精确地说，对于一个给定的键，其映射的存在并不阻止垃圾回收器对该键的丢弃，这就使该键成为可终止的，被终止，然后被回收。丢弃某个键时，其条目从映射中有效地移除，因此，该类的行为与其他的 Map 实现有所不同。 
+null 值和 null 键都被支持
+3.52 实现注意事项
+
+WeakHashMap 中的值对象由普通的强引用保持。因此应该小心谨慎，确保值对象不会直接或间接地强引用其自身的键，因为这会阻止键的丢弃。注意，值对象可以通过 WeakHashMap 本身间接引用其对应的键；这就是说，某个值对象可能强引用某个其他的键对象，而与该键对象相关联的值对象转而强引用第一个值对象的键。处理此问题的一种方法是，在插入前将值自身包装在 WeakReferences 中，如：m.put(key, new WeakReference(value))，然后，分别用 get 进行解包。 
+3.6、 TreeMap
+
+3.61 TreeMap特点
+
+- 基于红黑树（Red-Black tree）的 NavigableMap 实现。该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的 Comparator 进行排序，具体取决于使用的构造方法。
+- 键值对是红黑树结构，可以保证键的排序和唯一性
+- 此实现不是同步的
+须为TreeMap提供排序方案
+
+①根据其键的自然顺序进行排序（自定义对象须实现Comparable接口并重写compare方法） 
+②根据创建映射时提供的Comparator进行排序，具体取决于使用的构造方法。
+3.62 分析TreeMap的put方法源码
+
+1、判断Entry是否有元素，没有则new一个，并添加新元素 
+2、通过自然排序与比较器排序来为TreeMap排序，优先使用Comparator来排序
+
+通过Entry对象来来确保插入元素的唯一性，它建立在compare方法的基础上，此方法返回0时，表示插入的键存在，直接替换旧值并返回。因此在使用TreeMap时，自定义对象须实现Comparable接口并重写compare方法或在创建TreeMap时提供Comparator
+    cmp = cpr.compare(key, t.key);
+     if (cmp < 0)
+          t = t.left;
+      else if (cmp > 0)
+          t = t.right;
+      else
+      return t.setValue(value);
+
+3、在插入元素后重新调整红黑树（即Entry树）
+
+源码如下
+
+public V put(K key, V value) {
+        Entry<K,V> t = root;
+        // 判断Entry是否有元素，没有则new一个
+        if (t == null) {
+         compare(key, key); // type (and possibly null) check
+            root = new Entry<>(key, value, null);
+            size = 1;
+            modCount++;
+            return null; 
+        }
+        int cmp;
+        Entry<K,V> parent;
+        // 通过自然排序与比较器排序
+        // split comparator and comparable paths
+        Comparator<? super K> cpr = comparator;
+        if (cpr != null) {
+            do {
+                parent = t;
+                cmp = cpr.compare(key, t.key);
+                if (cmp < 0)
+                    t = t.left;
+                else if (cmp > 0)
+                    t = t.right;
+                else
+                    return t.setValue(value);
+            } while (t != null);
+        }
+        else {
+            if (key == null)
+                throw new NullPointerException();
+            @SuppressWarnings("unchecked")
+                Comparable<? super K> k = (Comparable<? super K>) key;
+            do {
+                parent = t;
+                cmp = k.compareTo(t.key);
+                if (cmp < 0)
+                    t = t.left;
+                else if (cmp > 0)
+                    t = t.right;
+                else
+                    return t.setValue(value);
+            } while (t != null);
+        }
+        Entry<K,V> e = new Entry<>(key, value, parent);
+        if (cmp < 0)
+            parent.left = e;
+        else
+            parent.right = e;
+        fixAfterInsertion(e);
+        size++;
+        modCount++;
+        return null;
+    }
+
+
+3.63 TreeMap使用示例
+
+public class TreeMapReview {
+    public static void main(String[] args) {
+        test1();
+        test2();
+    }
+
+    /**
+     * 自定义对象做key,需满足以下两个条件之一，否则抛出异常java.lang.ClassCastException:com.yu.bean.Info cannot be cast to java.lang.Comparable
+     * ①实现Comparable接口并重写compare方法
+     * ②构造TreeMap对象时，需传入Comparator
+     * 当两者都有，以Comparator来排序
+     */
+    private static void test2() {
+        TreeMap<Info, String> map=new TreeMap<Info, String>(new Comparator<Info>() {
+            @Override
+            public int compare(Info o1, Info o2) {
+                int num = o2.getId() - o1.getId();
+                num = num == 0 ? o2.getAdress().hashCode() - o1.getAdress().hashCode() : num;
+                return num;
+            }
+        });
+        map.put(new Info(000, "hhh"), "qqq");
+        map.put(new Info(001, "hhh"), "aaa");
+        map.put(new Info(002, "hhh"), "zzz");
+        map.put(new Info(000, "hhh"), "qqq");
+
+        System.out.println(map);
+    }
+
+    /**
+     * String类型或基本类型包装类做key
+     * String类实现了Comparable接口，可以进行自然排序
+     */
+    private static void test1() {
+        TreeMap<String, String> map = new TreeMap<String, String>();
+        map.put("a", "111");
+        map.put("b", "123");
+        map.put("c", "121");
+        map.put("c", "121");
+
+        Set<Entry<String, String>> entrySet = map.entrySet();
+        for (Entry<String, String> entry : entrySet) {
+            System.out.println("key=" + entry.getKey() + " value="
+                    + entry.getValue());
+        }
+        // output：
+//      key=a value=111
+//      key=b value=123
+//      key=c value=121
+    }
+}
+
+
+
+4、Collections集合工具类与Arrays的使用
+
+4.1 Arrays将数组转化为List
+
+Arrays的asList 方法将数组转化为List。 
+注意：获得的List是不可修改的
+
+String[] array=new String[]{"new","horld","new","dream"};
+// 将数组转化为List，注意，获得的List是不可修改的
+List<String> asList = Arrays.asList(array);
+//asList.add("do it!"); // 错误，java.lang.UnsupportedOperationException
+System.out.println(asList);
+1
+2
+3
+4
+5
+1
+2
+3
+4
+5
+4.2Collections大致功能：
+
+增删改查（addAll、replaceAll、fill、binarySearch、indexOfSubList、disjoint、max、min）
+位置变换（反转reverse、排序sort、随机置换shuffle、元素交换swap）
+同步 （synchronizedMap、synchronizedList、synchronizedCollection、synchronizedSet、synchronizedSortedMap、synchronizedSortedSet）
+转化（复制cpoy、返回视图asLifoQueue、list、enumeration） 等
+
+常用方法摘要
+
+
+    static <T> boolean addAll(Collection<? super T> c, T... elements) 
+              将所有指定元素添加到指定 collection 中。 
+    static <T> Queue<T> asLifoQueue(Deque<T> deque) 
+              以后进先出 (Lifo) Queue 的形式返回某个 Deque 的视图。 
+    static <T> int binarySearch(List<? extends Comparable<? super T>> list, T key) 
+              使用二分搜索法搜索指定列表，以获得指定对象。 
+    static <T> int binarySearch(List<? extends T> list, T key, Comparator<? super T> c) 
+              使用二分搜索法搜索指定列表，以获得指定对象。 
+    static <T> void copy(List<? super T> dest, List<? extends T> src) 
+              将所有元素从一个列表复制到另一个列表。 
+    static boolean disjoint(Collection<?> c1, Collection<?> c2) 
+              如果两个指定 collection 中没有相同的元素，则返回 true。 
+    static <T> void fill(List<? super T> list, T obj) 
+              使用指定元素替换指定列表中的所有元素。 
+    static int frequency(Collection<?> c, Object o) 
+              返回指定 collection 中等于指定对象的元素数。 
+    static int indexOfSubList(List<?> source, List<?> target) 
+              返回指定源列表中第一次出现指定目标列表的起始位置；如果没有出现这样的列表，则返回 -1。 
+    static int lastIndexOfSubList(List<?> source, List<?> target) 
+              返回指定源列表中最后一次出现指定目标列表的起始位置；如果没有出现这样的列表，则返回 -1。 
+    static <T extends Object & Comparable<? super T>> T max(Collection<? extends T> coll) 
+              根据元素的自然顺序，返回给定 collection 的最大元素。 
+    static <T> T max(Collection<? extends T> coll, Comparator<? super T> comp) 
+              根据指定比较器产生的顺序，返回给定 collection 的最大元素。 
+    static <T extends Object & Comparable<? super T>> T  min(Collection<? extends T> coll) 
+              根据元素的自然顺序 返回给定 collection 的最小元素。 
+    static <T> T min(Collection<? extends T> coll, Comparator<? super T> comp) 
+              根据指定比较器产生的顺序，返回给定 collection 的最小元素。 
+    static <T> boolean replaceAll(List<T> list, T oldVal, T newVal) 
+              使用另一个值替换列表中出现的所有某一指定值。 
+    static void reverse(List<?> list) 
+              反转指定列表中元素的顺序。 
+    static <T> Comparator<T> reverseOrder() 
+              返回一个比较器，它强行逆转实现了 Comparable 接口的对象 collection 的自然顺序。 
+    static <T> Comparator<T> reverseOrder(Comparator<T> cmp) 
+              返回一个比较器，它强行逆转指定比较器的顺序。 
+    static void shuffle(List<?> list) 
+    static <T extends Comparable<? super T>> void sort(List<T> list) 
+              根据元素的自然顺序 对指定列表按升序进行排序。 
+    static <T> void sort(List<T> list, Comparator<? super T> c) 
+              根据指定比较器产生的顺序对指定列表进行排序。 
+    static void swap(List<?> list, int i, int j) 
+              在指定列表的指定位置处交换元素。 
+    static <T> Collection<T>  synchronizedCollection(Collection<T> c) 
+    static <K,V> Map<K,V> synchronizedMap(Map<K,V> m) 
+              返回由指定映射支持的同步（线程安全的）映射。 
+
+
+4.3 Collections使用示例
+
+public class CollectionsUtils {
+    public static void main(String[] args) {
+        List<String> list=new ArrayList<String>();
+        list.add("aaa");
+        list.add("ddd");
+        list.add("fff");
+        list.add("kkk");
+        list.add("lll");
+
+        // sort方法针对List， 可以按自然排序，也可以按比较器排序
+//      Collections.sort(list);
+        Collections.sort(list,Collections.reverseOrder());// reverseOrder 反转比较器，返回一个比较器
+        System.out.println(list);
+
+        // 二分查找，可以指定比较器
+        // 当上面的sort设置反转比较器后，在进行查找可能出现找不到的情况，因为它是根据自然排序来查找的，这时需设置比较器
+//      Collections.binarySearch(list, "lll");
+        int binarySearch = Collections.binarySearch(list, "ddd",Collections.reverseOrder());
+        System.out.println(binarySearch);
+
+        // 返回自然排序的最大元素，可以指定比较器
+//      String max = Collections.max(list);
+        String max = Collections.max(list, new Comparator<String>() { // 指定比较器示例
+            @Override
+            public int compare(String o1, String o2) {
+                return o2.hashCode()-o1.hashCode();
+            }
+        });
+        System.out.println("max="+max);
+
+        // 对List集合任意排序
+//      Collections.shuffle(list);
+        // 反转集合
+        Collections.reverse(list);  
+        System.out.println(list);
+
+        // disjoint 比较两个集合是否有交集，无则返回true
+        Collection<?> list2=new ArrayList<String>();
+        boolean disjoint = Collections.disjoint(list, list2); 
+        System.out.println("disjoint="+disjoint); // output： true
+
+    }
+}
