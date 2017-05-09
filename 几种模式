@@ -1,0 +1,221 @@
+饿汉模式
+class Singleton
+{
+	///在内部准备好一个对象
+	private static Singleton instance = new Singleton();
+
+	public static Singleton getInstance(){
+		return instance;
+	}
+	private Singleton(){}
+
+	public void show(){
+		System.out.println("Singleton");
+	}
+}
+懒汉模式
+class Singleton{
+	private static Singleton instance = null;
+	public static Singleton getInstance(){// 将instance传递到外部去
+		if(instance == null){
+			instance = new Singleton();
+		}
+		return instance;
+	}
+	private Singleton(){}
+}
+
+
+工厂模式
+interface ICellPhone {
+    void sendMsg();
+}
+class Factory {
+	public static ICellPhone getInstance(String type) {
+		ICellPhone p = null;
+		     if ("htc".equals(type)) {
+			ff = new HTC();
+		     } else if ("iphone".equals(type)) {
+			ff = new IPhone();
+		}
+		return p;
+	}
+
+适配器
+interface IWindow{
+	void max();	
+	void min();
+	void close();
+}
+abstract class WindowAdapter implements IWindow{
+	public void max(){}
+	public void min(){}
+	public void close(){}
+}
+class MyWindow extends WindowAdapter {
+	public void close(){}
+}
+ 
+接口和抽象类的区别
+
+  1.抽象类 和 接口 都是用来抽象具体对象的. 但是接口的抽象级别最高
+	2.抽象类可以有具体的方法 和属性,  接口只能有抽象方法和不可变常量
+	3.抽象类主要用来抽象类别,接口主要用来抽象功能.
+  4、抽象类中，且不包含任何实现，派生类必须覆盖它们。接口中所有方
+    法	都必须是未实现的
+Treeset定制排序和自然排序
+一、TreeSet的自然排序：
+步骤：
+1.让元素自身具备比较性，
+2.实现Compareable接口，覆盖其CompareTo方法
+ 例：
+class Student  implementsComparable//第一：实现Compareable接口
+{
+    private String name;
+    private int age;
+ //复写构造函数初始化姓名跟年龄
+    Student(String name,int age)
+    {
+       this.name = name;
+       this.age = age;
+    }
+ 
+    public int compareTo(Object obj) //第二：复写CompareTo方法
+    {
+ 
+       //return 0;
+      
+       if(!(obj  instanceof  Student))   //第三：判断对象是否是特定类的一个实例
+           throw new RuntimeException("不是学生对象");
+       Student s = (Student)obj;
+ 
+       System.out.println(this.name+"....compareto....."+s.name);
+//第四：当前对象的年龄与插入对象的年龄进行比较，当前年龄大于插入对象的年龄时，返回1，
+此时将插入二叉树的右边，当等于时，返回0，进行次要条件的比较，再次调用；当小于时，返回-1；
+ 
+       if(this.age>s.age)     //判断当前对象年龄是否大于传入的对象年龄
+           return 1;
+       if(this.age==s.age)     //如果当前年龄等于传入对象的年龄，则比较姓名是否相同
+       {
+           return this.name.compareTo(s.name);
+       }
+       return -1;
+       /**/
+    }
+ 
+    public String getName()   //获取姓名
+    {
+       return  name;
+ 
+    }
+    public int getAge()    //获取年龄
+    {
+       return  age;
+    }
+}
+ 
+ 
+class TreeSetDemo
+{
+    public static void main(String[] args)
+    {
+       TreeSet ts = newTreeSet();   //创建一个TreeSet的集合
+ 
+       ts.add(new Student("lisi02",22));      //往集合添加元素
+       ts.add(new Student("lisi007",20));
+       ts.add(new Student("lisi09",19));
+       ts.add(new Student("lisi08",19));
+      
+ 
+       Iterator it = ts.iterator();  //初始化迭代器，遍历集合中的所有元素
+       while(it.hasNext())
+       {
+           Student stu = (Student)it.next();
+           System.out.println(stu.getName()+"..."+stu.getAge());
+       }
+    }
+}
+ 
+ 二、TreeSet的定制排序
+1、由来：当元素自身不具备比较性时，或者具备的比较性不是所需要的。
+                   这时就要让集合自身具备比较性，在初始化时，就有了比较方式。
+2、步骤：
+                1）实现comparator接口
+                2）复写compare方法
+                3）在创建TreeSet集合对象时,提供一个一个Comparator对象,
+例：
+import Java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
+ 
+class Student1{
+    private Integer age;
+   
+    public Student1(Integer age) {
+       super();
+       this.age = age;
+    }
+ 
+    public Integer getAge() {
+       return age;
+    }
+ 
+    public void setAge(Integer age) {
+       this.age = age;
+    }
+ 
+    @Override
+    public String toString() {
+       return age + "";
+    }
+}
+ 
+class MyComparator implements Comparator{  //第一步：实现Comparator接口
+   
+    @Override
+    public int compare(Object o1, Object o2) {   //第二步：实现一个campare方法
+判断对象是否是特定类的一个实例
+       if(o1 instanceof Student1 & o2instanceof Student1){
+           Student1 s1 =(Student1)o1;
+           Student1 s2 =(Student1)o2;
+           if(s1.getAge() > s2.getAge()){
+              return -1;
+           }else if(s1.getAge() < s2.getAge()){
+              return 1;
+           }
+       }
+       return 0;
+    }
+}
+ 
+public class Demo15 {
+    public static void main(String[] args) {
+       Set<Student1> s= new TreeSet(new  MyComparator());//第三步：创建TreeSet集合对象时,提供一个一个Comparator对象,
+       /**
+        * 要实现定制排序,需要在创建TreeSet集合对象时,提供一个一个Comparator对象,
+        * 该对象里负责集合元素的排序逻辑;
+        */
+       s.add(new Student1(140));
+       s.add(new Student1(15));
+       s.add(new Student1(11));
+       s.add(new Student1(63));
+       s.add(new Student1(96));
+       System.out.println(s);
+    }
+}
+
+
+
+
+
+
+      ○ StringBuffter();和StringBuilder()的区别：
+          ■ 效率低线程安全，效率高线程不安全
+      ○ ArrayList和LinkList的区别：
+          ■ 增删慢查询快，增删快查询慢
+      ○ Hashtable和HashMap的区别：
+          ■ 线程安全速度慢，线程不安全速度快
+      ○ HashSet和TreeSet的区别：
+          ■ 散列储存线程不安全，有序存放线程安全
+
+
