@@ -1,0 +1,194 @@
+把一组或多组实物相同的特性的集合的描述----->类
+//声明一个student类
+public class student{
+//声明类的属性信息
+String name;//姓名
+int age;//年龄
+char sex;//性别
+//声明类的动作信息
+public void eat(){
+System.out.println（"eating"）；
+}
+public void study(){
+System.out.println（"study"）；
+}
+} 
+          -------------》
+          具象化过程
+类《===========》对象
+          抽象化过程
+         《-------------
+
+public class Main{
+public static void main(String[] arges){
+//产生对象 student类的对象
+//具象化过程
+Student student1=new Student（）；
+student1.name="baobao"；
+//像两个或多个，只能通过new创建
+Student student2=new Student（）；
+student2.name="wang"；
+}
+}
+//构造器-------->实例化的时候自己调用的
+//构造器名字必须和类名一致，并且没有返回值
+//构造器作用实例化作用时，直接初始化字段
+public Student(){
+System.out.println("我被调用了")；
+}
+public Student(String n){
+name=n；
+}
+
+
+//被static修饰的方法叫静态方法
+//只能调用静态的属性
+public static void sleep（）{
+System.out.println("我叫"+numbers)；
+}
+
+
+一：面向对象的三个特征：
+封装(Encapsulation);
+继承(Inheritance);
+多态(Polymorphism)。
+二：类与对象之间的关系：
+1：类是对生活中某一类事物的描述（一种抽象概念），对象是该类事物实实在在存在的个体。(对象==实例)
+2：类是对具有相似性质的一类事物的抽象描述(包括状态和行为);
+类是对象的模板，对象是类的实例,例子:描述昨天看见的一个妹子;
+抽取对象中共性内容，--->对具体进行抽象；---->该类事物具备的特性；
+描述事物--->描述事物的的字段和行为；
+	状态对应类中的成员变量(字段);决定对象的具体表现形式
+	行为对应类中的方法；决定了对象的具体的一些行为
+所以定义类就是在描述事物，就是在给类中定义类的成员(字段和方法)；
+
+如何进行对象的抽象:
+把一系列相同或相似的对象的特点抽取出来,采用一个统一的表达方式,这个就是抽象;
+如:   春哥身高 165cm,体重45kg,会跳舞,会唱歌;
+         凤姐身高145cm,体重50kg,会捏脚;
+那怎么同时描述春哥和凤姐呢?  二者都是人吧!那也就说我们可以用 "人"　这个东西来描述他们;
+人
+{
+       状态:	
+	名字;
+	身高;
+	体重;
+       行为功能:
+	跳舞();
+	唱歌();
+	捏脚();
+}
+三：类的定义
+1：[修饰符] class  类名{
+  	1~n个构造方法；
+	0~n个字段；
+	0~n个方法
+2：构造方法：用来构造类的实例（默认有一个无参的构造方法，得
+使用new调用）
+字段：类或对象所包含的数据，对类状态的一种描述；
+方法：类或对象的特征或行为
+
+3：类名和方法名：类名 首字母大写  方法名首字母小写  
+StudentXxxOoo,修饰符
+在后面讲;
+void  studentScore(){}
+修饰符可以是 public ，final  或则省略
+goto   const  不是关键字 但是作为保留字 保留了下来，我们定义变
+量的时候不能使用
+
+class Car{
+}
+四个访问权限，final  abstrat
+class Student{
+	public Student(){
+	
+	}
+
+	publicStudent(String name){
+		this.Student();
+	}
+
+}
+	Student s = new Student("");
+4：class  CellPhone{
+    String brand = "google";
+    String color = "red";
+    double price;
+	
+    public void showInfo()
+    {		
+	System.out.println(
+		brand+ "手机是"+color+"色的"+"价值"+price);
+    }
+}
+定义类，其实就是在定义类中的成员。
+四：对象的定义、创建以及使用
+格式：
+类名  对象名称 = new 类名();	//其实是两步操作
+类名  对象名称 ;		//声明对象
+对象名称   =   new 类名();	//实例化对象
+例：
+CellPhone iphone  =  new CellPhone();
+通过“对象名.对象成员”的方式来操作对象中的内容。
+思考：对象在内存是如何存在的？
+
+
+
+创建对象其实就是在堆内存里开辟存储空间；
+五：static关键字
+1：特点：
+随着类的加载而加载
+优先于对象存在
+被所有对象所共享
+可以直接被类名调用
+2：使用注意：
+静态方法只能访问静态成员
+但是非静态成员可以访问静态成员;
+静态方法中不可以使用this，super关键字
+主方法（main）是静态的
+public static void main(String[] agrs){}
+3：static关键字的使用：
+使用static修饰的字段值保存在静态内存区域;
+可修饰字段,方法。
+用static 修饰的成员表示它属于这个类共有，而不是属于该类的
+单个实例。
+		static 修饰的字段 == 类字段
+		static 修饰的方法 == 类方法
+
+没使用static修饰的字段和方法，成员属于类的单个实例，
+不属于类。
+		没有static 修饰的字段 == 实例字段
+		没有static 修饰的方法 == 实例方法
+六：访问字段和方法
+类和实例访问字段和方法的语法：
+访问类成员：	类.字段     	类.方法
+访问实例成员：	实例.字段     	实例.方法
+
+static 修饰的字段和方法，既可以通过类调用，也可以使用实例调
+用；
+
+没static 修饰的字段和方法，只能使用实例来调用
+七：匿名对象
+特点:
+对方法或字段只进行一次调用时；
+new Car().show();
+new Car().run();
+可作为实际参数进行传递；
+public void show(Car  c){ }    
+new Car().show(new Car());
+只在堆内存中开辟空间，而没有在栈内存的引用。
+八：对象的引用
+CellPhone  phone  =  new CellPhone();
+1. 创建了一个CellPhone  的实例（对象），
+2. 把这个CellPhone  实例赋给 phone   变量。
+
+phone.brand="Android";
+引用变量指向对象，也就是说引用型变量存放的仅仅是一个引用;
+九：private私有
+public in  getAge(){
+return age;
+}
+
+public void setAge(int age){
+this.age=age-10;
+}
