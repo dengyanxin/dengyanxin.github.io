@@ -1,0 +1,132 @@
+
+javaIO流
+ 
+File 类表示一个目录或文件夹 ”\”的转义字符是 ”\\”
+File. Separator判断操作系统自动自动切换目录分隔符
+File.exist是 判断文件或目录是否存在
+JavaIO采用装饰者模式
+Java输入输出是站在内存的角度来看的
+java输入输出是以流的方式表示的，把文件读如内存是输入流，把文件从内存写入硬盘称为输出流，java流又分为字符流和字节流，字节流是处理二进制文件，字符流是处理字符文件，java字节输入流常用的有FileInputStream文件输入流，BufferedInputStream 带缓冲的字节输入流和DataInputStream 数据输入流。字节输出流有FileOutputstream 文件输出流，BufferedOutputStream 带缓冲的字节输出流， DataOutputStream 数据输出流。字符流也分为输入流和输出流，字符输入流有InputStreamReader ，FileReader,BufferedReader，输出流有 InputStreamWriter，FileWriter,BufferWriter，其中InputStreamReader和OutputstreamWriter又称为转换流InputStreamReader 是将字节流转换为字符流，OutputstreamWriter是将字符流转换为字节流。
+  使用输入和输出流有是速度太慢，可以封装成缓冲流加快速度
+ BufferedInputstream  in = new BufferedInputstream(newFileInputStream(“文件路径名”));
+ 
+BufferedOutputStreamout= new BufferedOutputStream(new FileOutputStream(“文件路径名”));
+ 
+[java] view plain copy
+  1. <span style="font-size:18px;">                FileInputStream inputStream = new FileInputStream(sourceFile);  
+  2.         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);  
+  3.           
+  4.         FileOutputStream outputStream = new FileOutputStream(newFile);  
+  5.         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);  
+  6.           
+  7.         int b = 0;  
+  8.         byte[] buffer = new byte[2048];  
+  9.           
+  10.         long startTime = System.currentTimeMillis();  
+  11.         while(b  != -1) {  
+  12.             b = bufferedInputStream.read(buffer);  
+  13.             bufferedOutputStream.write(buffer,0,buffer.length);  
+  14.         }  
+  15.         System.out.println("耗时：" + (System.currentTimeMillis() - startTime) + "ms");  
+  16.           
+  17.         bufferedInputStream.close();  
+  18.           
+  19.         bufferedOutputStream.flush();  
+  20.         bufferedOutputStream.close();</span>  
+
+BufferedReader in=new BufferedReader(new InputStreamReader(new FileInputStream(“文件路径名”))); 或 BufferedReader in= new BufferedReader(new FileReader(“文件路径名”));
+ 
+BufferWriter out =new BufferWriter(new InputStreamWriter(new FileInputStream(“文件路径名”))); 或 BufferWriter out = new BufferWriter(FileWriter(“文件路径名”));
+ 
+当文件读取或写入完毕需要关闭流调用close()方法关闭如果是缓冲流关闭缓冲流即可，嵌套的流会自动关闭，写入流写入完成后需要刷新一下内存将没有写入的内容强制刷入文件调用flush();方法
+ 
+[java] view plain copy
+  1. <span style="font-size:18px;">                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("c:\\a.txt")));  
+  2.           
+  3.         String str = "";  
+  4.           
+  5.         while((str = reader.readLine()) != null) {  
+  6.             System.out.println(str);  
+  7.         }  
+  8.           
+  9.         reader.close();  
+  10.           
+  11.         BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("C:\\a.txt",true)));  
+  12.           
+  13.         w.write("xxxxxxxxxxxx");  
+  14.           
+  15.         w.flush();  
+  16.         w.close();</span>  
+
+
+  序列化对象   ：序列化对象就是将对象以二进制的形式保存或者在网络上传输
+  序列化对象 ：ObjectInputStream();反序列化对象ObjectOutputStream
+序列化对象是要求对象必须实现Serializable接口，这个接口没有属性和方法，他是序列化的一个标示，未实现Serializable接口的类不能参与序列化，如果父类序列化那么子类必然是可序列化的，transient 关键字标示一个属性，表示这个属性不参与序列化。
+ 
+[java] view plain copy
+  1. <span style="font-size:18px;">public class User implements Serializable{  
+  2.   
+  3.       
+  4.       
+  5.     private static final long serialVersionUID = 1L;  
+  6.       
+  7.     private int id;  
+  8.     private String name;  
+  9.     private transient float score;  
+  10.       
+  11.     public int getId() {  
+  12.         return id;  
+  13.     }  
+  14.     public void setId(int id) {  
+  15.         this.id = id;  
+  16.     }  
+  17.     public String getName() {  
+  18.         return name;  
+  19.     }  
+  20.     public void setName(String name) {  
+  21.         this.name = name;  
+  22.     }  
+  23.     public float getScore() {  
+  24.         return score;  
+  25.     }  
+  26.     public void setScore(float score) {  
+  27.         this.score = score;  
+  28.     }  
+  29.       
+  30.       
+  31. }</span>  
+序列化对象
+[java] view plain copy
+  1. <span style="font-size:18px;">User user = new User();  
+  2.         user.setId(1);  
+  3.         user.setName("Tom");  
+  4.         user.setScore(98);  
+  5.           
+  6.         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:\\user.dat"));  
+  7.           
+  8.         oos.writeObject(user);  
+  9.           
+  10.         oos.flush();  
+  11.         oos.close();  
+  12.           
+  13.         ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\user.dat"));  
+  14.           
+  15.         User user2 = (User) ois.readObject();  
+  16.           
+  17.         ois.close();  
+  18.           
+  19.         System.out.println(user2.getId());  
+  20.         System.out.println(user2.getScore());  
+  21.         System.out.println(user2.getName());  
+  22.         </span>  
+
+设置标准输入和输出
+ 
+System.out是标准输出输出到屏幕 System.setOut(new PrintStream(“文件路径名”));
+将控制台输出内容输出到文件
+ 
+System.in是标准输入输入，从键盘输入System.setIn(new FileInputStream(““文件路径名””));
+读取文件
+
+
+
